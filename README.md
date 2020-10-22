@@ -1,0 +1,102 @@
+
+# About betaC
+
+This r package “betaC” accompanies a manuscript submitted for revision.
+This is an anonymous repository for the reviewers. Upon acceptance of
+the manuscript, the repo will be moved to the author’s github.
+
+## Objectives
+
+The r package and this repository have two main objectives:
+
+1.  To provide easy tools for the calculation of beta\_C, a metric that
+    quantifies the non-random component in beta-diversity for a given
+    sample completeness.
+
+2.  To share the simulation code and results that we use in our
+    above-mentioned paper. You can find them in the folder
+    [Simulations](https://github.com/betaCgit/betaC/tree/master/Simulations).
+
+## Installation
+
+You can install the development version of the package “betaC” from
+[GitHub](https://github.com/betaCgit/betaC) with:
+
+``` r
+devtools::install_github("betaCgit/betaC")
+```
+
+Please, also install the package “vegan” from CRAN.
+
+``` r
+install.packages("vegan")
+```
+
+Furthermore, “tidyverse” is recommended but the main functions will work
+without it.
+
+## Short summary
+
+betaC is a beta-diversity index that measures intraspecific spatial
+aggregation or species turnover in space independently of the size of
+the regional species pool. This is important because most beta-diversity
+metrics don’t only respond to the spatial structure of species diversity
+in an area but also to the total number of species occurring there. So,
+high beta-diversity can mean that there is a strong spatial clumping of
+species and/or that there is just a high gamma diversity. People have
+tried to disentangle these effects with mixed results.
+
+In our paper we make the argument that the species-pool dependence of
+beta-diversity is linked sampling effects. Sampling effects arises
+because alpha and gamma scale diversity estimates are by definition
+based on very different sample sizes (i.e., numbers of individuals
+captured by a sample). This means that a major part of beta diversity is
+usually due to a more-individuals effect between alpha and gamma scales
+and not due to spatial structure. The strength of this sampling effect
+is stronger in large species pools where sampling curves are typically
+very steep (i.e. there is a larger jump from alpha to gamma). The
+steepness of sampling curves is related to sample completeness. We find
+that by standardizing beta-diversity by sample completeness, we remove
+the sampling effect and the resulting metric, betaC only responds to
+spatial aggregation.
+
+To achieve this, we use a combination of individual-based and
+coverage-based rarefaction (coverage is a measure of sample
+completeness). The main idea of our approach is that within a species
+pool alpha and gamma scale diversity estimates are standardized to a
+common number of individuals, while across species pools we allow the
+sample size to vary in order to keep a constant gamma-scale sample
+sample coverage (*C*) instead.
+
+## Main functions of this package
+
+If you’ve read the paper and you just want to have the code to calculate
+beta\_C, here is all you need to know:
+
+  - The main function of this package is `beta_C()`. Its first argument
+    `x` takes a site-by-species abundance matrix as a matrix object or
+    data frame (sites=rows, species= rows). The second argument `C` is
+    the target coverage used for standardization. The function returns
+    beta\_C as a numeric value. As a default extrapolation is used but
+    you can also change this using the argument `extrapolation` Type
+    `?beta_C` to see the documentation.
+
+  - The other important function is `C_target(x)`. Its fits argument `x`
+    is a site-by-species abundance matrix. It returns the maximum
+    possible coverage value that can be used to calculate beta\_C for
+    the community matrix `x`. As a default it allows for extrapolation,
+    i.e. it will extrapolate to a sample size that exceeds the smallest
+    sample size by a factor 2. You can also adjust this extrapolation
+    factor through the argument `factor`(e.g. `factor = 1` for
+    interpolation only). However, we caution against values larger than
+    2. When comparing beta\_C across multiple communities with changing
+    species pools, it is recommended to choose the `C` argument in
+    `beta_C(x, C)`such that it corresponds to the smallest `C_target()`
+    output of all the communities. Type `?C_target` to see the
+    documentation.
+
+<!-- badges: start -->
+
+[![Travis build
+status](https://travis-ci.org/betaCgit/betaC.svg?branch=master)](https://travis-ci.org/betaCgit/betaC)
+<!-- badges: end -->
