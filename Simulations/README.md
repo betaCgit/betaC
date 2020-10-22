@@ -12,4 +12,4 @@ manuscript. It has the following files:
 To run this code, please clone this repository to your machine. For
 example with this command:
 
-`$ git clone https://github.com/T-Engel/betaC.git`
+`$ git clone https://github.com/betaCgit/betaC.git`
